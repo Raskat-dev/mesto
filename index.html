@@ -28,44 +28,44 @@
         <section class="cards">
           <div class="card">
             <img src="./img/card1.jpg" alt="закат" class="card__image">
-            <div class="card__discription">
+            <div class="card__description">
               <p class="card__title">Закат</p>
-              <img src="./img/like.svg" alt="лайк" class="card__like">
+              <button type="button" class="card__like"></button>
             </div>
           </div>
           <div class="card">
             <img src="./img/card2.jpg" alt="причал" class="card__image">
-            <div class="card__discription">
+            <div class="card__description">
               <p class="card__title">Причал</p>
-              <img src="./img/like.svg" alt="лайк" class="card__like">
+              <button type="button" class="card__like"></button>
             </div>
           </div>
           <div class="card">
             <img src="./img/card3.jpg" alt="водопад" class="card__image">
-            <div class="card__discription">
+            <div class="card__description">
               <p class="card__title">Водопад</p>
-              <img src="./img/like.svg" alt="лайк" class="card__like">
+              <button type="button" class="card__like"></button>
             </div>
           </div>
           <div class="card">
             <img src="./img/card4.jpg" alt="путешествуй" class="card__image">
-            <div class="card__discription">
+            <div class="card__description">
               <p class="card__title">Путешествуй</p>
-              <img src="./img/like.svg" alt="лайк" class="card__like">
+              <button type="button" class="card__like"></button>
             </div>
           </div>
           <div class="card">
             <img src="./img/card5.jpg" alt="горы" class="card__image">
-            <div class="card__discription">
+            <div class="card__description">
               <p class="card__title">Горы</p>
-              <img src="./img/like.svg" alt="лайк" class="card__like">
+              <button type="button" class="card__like"></button>
             </div>
           </div>
           <div class="card">
             <img src="./img/card6.jpg" alt="река" class="card__image">
-            <div class="card__discription">
+            <div class="card__description">
               <p class="card__title">Река и мосты</p>
-              <img src="./img/like.svg" alt="лайк" class="card__like">
+              <button type="button" class="card__like"></button>
             </div>
           </div>
         </section>
@@ -73,5 +73,15 @@
       <footer class="footer">
         <p class="footer__copyright">&copy; 2020. Катюжанский Ростислав</p>
       </footer>
+    <div class="popup popup_opened">
+      <form class="popup__container" method="post" action="#">
+        <button class="popup__close" type="button"></button>
+        <h3 class="popup__title">Редактировать профиль</h3>
+        <input class="popup__input popup__input_name" type="text" value ="Жак-Ив Кусто" required>
+        <input class="popup__input popup__input_job" type="text" value ="Исследователь океана" required>
+        <button class="popup__save" type="submit">Сохранить</button>
+      </div>
+    </div>
+    <script src="./js/script.js"></script>
   </body>
 </html>
