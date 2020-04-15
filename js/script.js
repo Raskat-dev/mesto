@@ -20,9 +20,6 @@ function formPopup () {
     popup.classList.add('popup_opened')
   }
 }
-
-editButton.addEventListener('click', formPopup);
-closeButton.addEventListener('click', formPopup);
 //функция для сохранения ввода
 function formSubmitHandler (evt) {
     evt.preventDefault();
@@ -30,4 +27,7 @@ function formSubmitHandler (evt) {
     profileJob.textContent = jobInput.value;
     formPopup ()
 }
+
 formElement.addEventListener('submit', formSubmitHandler);
+editButton.addEventListener('click', formPopup);
+closeButton.addEventListener('click', formPopup);
