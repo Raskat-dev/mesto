@@ -1,7 +1,7 @@
 .popup__save {
   width: 83%;
   height: 50px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -14,8 +14,8 @@
   margin-top: 20px;
 }
 
-.popup__button:hover {
+.popup__save:hover {
   cursor: pointer;
-  opacity: .8;
+  background-color: rgba(0, 0, 0, .8);
   transition: .3s ease-out;
 }
