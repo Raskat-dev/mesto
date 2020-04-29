@@ -24,64 +24,48 @@
             <button class="profile__edit-button" type="button" aria-label="редактировать"></button>
           </div>
           <button class="profile__add-button" type="button" aria-label="добавить фото"></button>
+          <div id="popup_author" class="popup">
+            <form class="popup__container" method="post" action="#" name="popup">
+              <button class="popup__close" type="button" aria-label="закрыть"></button>
+              <h3 class="popup__title">Редактировать профиль</h3>
+              <input class="popup__input popup__input_name" type="text" value ="Жак-Ив Кусто" placeholder="Введите имя" name="Name" required>
+              <input class="popup__input popup__input_job" type="text" value ="Исследователь океана" placeholder="Род занятий" name="Job" required>
+              <button class="popup__save" type="submit" aria-label="сохранить">Сохранить</button>
+            </form>
+          </div>
         </section>
         <section class="cards">
-          <div class="card">
-            <img src="./img/card1.jpg" alt="закат" class="card__image">
-            <div class="card__description">
-              <h2 class="card__title">Закат</h2>
-              <button type="button" class="card__like" aria-label="лайк"></button>
-            </div>
+          <div id="popup_card" class="popup">
+            <form class="popup__container" method="post" action="#" name="popup">
+              <button class="popup__close" type="button" aria-label="закрыть"></button>
+              <h3 class="popup__title">Новое место</h3>
+              <input class="popup__input popup__input_place" type="text" placeholder="Название" name="Place" required>
+              <input class="popup__input popup__input_link" type="text" placeholder="Ссылка на картинку" name="Link" required>
+              <button class="popup__save" type="submit" aria-label="сохранить">Сохранить</button>
+            </form>
           </div>
-          <div class="card">
-            <img src="./img/card2.jpg" alt="причал" class="card__image">
-            <div class="card__description">
-              <h2 class="card__title">Причал</h2>
-              <button type="button" class="card__like" aria-label="лайк"></button>
-            </div>
-          </div>
-          <div class="card">
-            <img src="./img/card3.jpg" alt="водопад" class="card__image">
-            <div class="card__description">
-              <h2 class="card__title">Водопад</h2>
-              <button type="button" class="card__like" aria-label="лайк"></button>
-            </div>
-          </div>
-          <div class="card">
-            <img src="./img/card4.jpg" alt="путешествуй" class="card__image">
-            <div class="card__description">
-              <h2 class="card__title">Путешествуй</h2>
-              <button type="button" class="card__like" aria-label="лайк"></button>
-            </div>
-          </div>
-          <div class="card">
-            <img src="./img/card5.jpg" alt="горы" class="card__image">
-            <div class="card__description">
-              <h2 class="card__title">Горы</h2>
-              <button type="button" class="card__like" aria-label="лайк"></button>
-            </div>
-          </div>
-          <div class="card">
-            <img src="./img/card6.jpg" alt="река" class="card__image">
-            <div class="card__description">
-              <h2 class="card__title">Река и мосты</h2>
-              <button type="button" class="card__like" aria-label="лайк"></button>
-            </div>
+          <div id="popup_photo" class="popup popup_opacity_dark">
+              <div class="popup__photo-position">
+                <button class="popup__close" type="button" aria-label="закрыть"></button>
+                <img src="" alt="" class="popup__image">
+                <p class="popup__place"></p>
+              </div>
           </div>
         </section>
       </main>
       <footer class="footer">
         <p class="footer__copyright">&copy; 2020. Mesto Russia</p>
       </footer>
-    <div class="popup popup_opened">
-      <form class="popup__container" method="post" action="#" name="popup">
-        <button class="popup__close" type="button" aria-label="закрыть"></button>
-        <h3 class="popup__title">Редактировать профиль</h3>
-        <input class="popup__input popup__input_name" type="text" value ="Жак-Ив Кусто" placeholder="Введите имя" name="Name" required>
-        <input class="popup__input popup__input_job" type="text" value ="Исследователь океана" placeholder="Род занятий" name="Job" required>
-        <button class="popup__save" type="submit" aria-label="сохранить">Сохранить</button>
-      </form>
-    </div>
+    <template id="card-template">
+      <div class="card">
+        <img class="card__image" alt="" src="">
+        <button type="button" class="card__delete" aria-label="удалить"></button>
+       <div class="card__description">
+          <h2 class="card__title"></h2>
+          <button type="button" class="card__like" aria-label="лайк"></button>
+        </div>
+      </div>
+    </template>
     <script src="./js/script.js"></script>
   </div>
   </body>

@@ -6,4 +6,7 @@
   line-height: 29px;
   margin: 0;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 200px;
 }
