@@ -16,6 +16,10 @@
   transition: .3s ease-out;
 }
 
+.popup__close:focus {
+  outline: none;
+}
+
 @media screen and (max-width: 374px) {
   .popup__close {
     top: -35px;

@@ -19,3 +19,7 @@
   background-color: rgba(0, 0, 0, .8);
   transition: .3s ease-out;
 }
+
+.popup__save:focus {
+  outline: none;
+}

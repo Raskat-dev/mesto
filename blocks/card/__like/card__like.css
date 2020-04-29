@@ -12,3 +12,7 @@
   opacity: .6;
   transition: .3s ease-out;
 }
+
+.card__like:focus {
+  outline: none;
+}
