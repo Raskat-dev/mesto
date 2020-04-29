@@ -16,11 +16,20 @@
   top: 0;
   left: 0;
   z-index: 999;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s, visibility linear 0.2s;
+  -webkit-transition: opacity 0.3s, visibility linear 0.3s;
+  -o-transition: opacity 0.3s, visibility linear 0.3s;
+  transition: opacity 0.3s, visibility linear 0.3s;
 }
