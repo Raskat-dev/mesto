@@ -3,19 +3,19 @@
 .footer {
   max-width: 882px;
   margin: 0 auto;
-  padding-bottom: 60px;
+  padding: 0 30px 60px;
 }
 
 @media screen and (max-width: 881px) {
   .footer {
     max-width: 582px;
-    padding-bottom: 48px;
+    padding: 0 0 48px;
   }
 }
 
 @media screen and (max-width: 581px) {
   .footer {
     max-width: 281px;
-    padding-bottom: 36px;
+    padding: 0 0 36px;
   }
 }
