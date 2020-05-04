@@ -52,18 +52,14 @@ const linkInput = photoElement.querySelector('.popup__input_link');//photo-add l
 
 
 function openClosePopup(popup) {
-  popup.classList.toggle('popup_opened');
-}
-
-function openCloseAuthorPopup() {
-    nameInput.value = profileName.textContent;
-    jobInput.value = profileJob.textContent;
-    openClosePopup(authorPopup);
-}
-//функция для вызова формы добавления фото
-function openClosePhotoPopup() {
+  if(popup.id ==='popup_author') {
+   nameInput.value = profileName.textContent;
+   jobInput.value = profileJob.textContent;
+  }
+  else if (popup.id ==='popup_card') {
   photoElement.reset();
-  openClosePopup(photoPopup);
+  }
+ popup.classList.toggle('popup_opened');
 }
 
 //функция для просмотра оригинала фото
@@ -112,22 +108,22 @@ function formSubmitAuthor (evt) {
     evt.preventDefault();
     profileName.textContent = nameInput.value;
     profileJob.textContent = jobInput.value;
-    openCloseAuthorPopup ()
+    openClosePopup(authorPopup);
 }
 function formSubmitPhoto (evt) {
   evt.preventDefault();
   addPhoto(placeInput.value, linkInput.value);
   placeInput.value = '';
   linkInput.value = '';
-  openClosePhotoPopup();
+  openClosePopup(photoPopup);
 };
 
 authorElement.addEventListener('submit', formSubmitAuthor);//save new name\status
-editButton.addEventListener('click', openCloseAuthorPopup);//change name\status
-closeAuthorButton.addEventListener('click', openCloseAuthorPopup);//close authorPopup
+editButton.addEventListener('click', () => openClosePopup(authorPopup));//change name\status
+closeAuthorButton.addEventListener('click', () => openClosePopup(authorPopup));//close authorPopup
 photoElement.addEventListener('submit', formSubmitPhoto);
-addButton.addEventListener('click', openClosePhotoPopup);//open photo-add popup
-closePhotoButton.addEventListener('click', openClosePhotoPopup);//close photo-add popup
+addButton.addEventListener('click', () => openClosePopup(photoPopup));//open photo-add popup
+closePhotoButton.addEventListener('click', () => openClosePopup(photoPopup));//close photo-add popup
 closeOriginalButton.addEventListener('click', openCloseOriginal);//close original popup
 
 initialCards.forEach((item) => {
