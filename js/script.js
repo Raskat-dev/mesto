@@ -56,7 +56,6 @@ function openClosePopup(popup) {
 }
 
 function openCloseAuthorPopup() {
-
     nameInput.value = profileName.textContent;
     jobInput.value = profileJob.textContent;
     openClosePopup(authorPopup);
@@ -69,15 +68,12 @@ function openClosePhotoPopup() {
 
 //функция для просмотра оригинала фото
 function openCloseOriginal(photoPlace, photoLink) {
-  if (originalPhoto.classList.contains('popup_opened')) {
-    openClosePopup(originalPhoto);
+  if (!originalPhoto.classList.contains('popup_opened')) {
+    placeValue.textContent = photoPlace;
+    imageValue.src = photoLink;
+    imageValue.alt = photoPlace;
 }
-  else {
-  openClosePopup(originalPhoto)
-  placeValue.textContent = photoPlace;
-  imageValue.src = photoLink;
-  imageValue.alt = photoPlace;
-}
+  openClosePopup(originalPhoto);
 }
 
 function pressLike(evt) {
@@ -85,27 +81,32 @@ function pressLike(evt) {
 }
 
 function pressDelete(evt) {
-  evt.target.closest('.card').remove()
+  evt.target.closest('.card').removeEventListener('click', pressLike);
+  evt.target.closest('.card').removeEventListener('click', openCloseOriginal);
+  evt.target.closest('.card').remove();
+}
+
+function createContent(block, element) {
+  block.prepend(element);
 }
 
 function addPhoto(place, link) {
   const cardElement = cardTemplate.cloneNode(true);
+  const cardImageElement = cardElement.querySelector('.card__image');
+  const cardTextElement = cardElement.querySelector('.card__title');
 
-  cardElement.querySelector('.card__title').textContent = place;
-  cardElement.querySelector('.card__image').src = link;
-  cardElement.querySelector('.card__image').alt = place;
+  cardTextElement.textContent = place;
+  cardImageElement.src = link;
+  cardImageElement.alt = place;
 
   cardElement.querySelector('.card__like').addEventListener('click', pressLike);
 
-  cardElement.querySelector('.card__delete').addEventListener('click', pressDelete);
+  cardElement.querySelector('.card__delete').addEventListener('click', pressDelete, {once : true});
+  cardImageElement.addEventListener('click', () =>
+openCloseOriginal(place, link));
 
-  cardElement.querySelector('.card__image').addEventListener('click', () => {
-    openCloseOriginal(place, link);
-  });
-
-  cardsSection.prepend(cardElement);
+  createContent(cardsSection, cardElement);
 }
-
 //функция для сохранения ввода
 function formSubmitAuthor (evt) {
     evt.preventDefault();
