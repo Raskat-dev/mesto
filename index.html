@@ -25,22 +25,22 @@
           </div>
           <button class="profile__add-button" type="button" aria-label="добавить фото"></button>
         </section>
-        <section class="cards">
+        <ul class="cards">
 
-        </section>
+        </ul>
       </main>
       <footer class="footer">
         <p class="footer__copyright">&copy; 2020. Mesto Russia</p>
       </footer>
     <template id="card-template">
-      <div class="card">
+      <li class="card">
         <img data-link="" class="card__image" alt="" src="">
         <button type="button" class="card__delete" aria-label="удалить"></button>
        <div class="card__description">
           <h2 data-place="" class="card__title"></h2>
           <button type="button" class="card__like" aria-label="лайк"></button>
         </div>
-      </div>
+      </li>
     </template>
     <div id="popup_author" class="popup">
       <form class="popup__container" method="post" action="#" name="popup">
@@ -56,7 +56,7 @@
         <button class="popup__close" type="button" aria-label="закрыть"></button>
         <h3 class="popup__title">Новое место</h3>
         <input class="popup__input popup__input_place" type="text" placeholder="Название" name="Place" required>
-        <input class="popup__input popup__input_link" type="text" placeholder="Ссылка на картинку" name="Link" required>
+        <input class="popup__input popup__input_link" type="url" placeholder="Ссылка на картинку" name="Link" required>
         <button class="popup__save" type="submit" aria-label="сохранить">Сохранить</button>
       </form>
     </div>

@@ -5,6 +5,7 @@
   border: none;
   width: 20px;
   height: 18px;
+  margin-top: 6px;
 }
 
 .card__like:hover {

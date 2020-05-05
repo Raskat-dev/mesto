@@ -25,51 +25,49 @@ const initialCards = [
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
-const profileName = document.querySelector('.profile__name');//name
-const profileJob = document.querySelector('.profile__status');//status
-const cardTemplate = document.querySelector('#card-template').content;//константа блока кардс
+const profileName = document.querySelector('.profile__name');
+const profileJob = document.querySelector('.profile__status');
+const cardTemplate = document.querySelector('#card-template').content;
 const cardsSection = document.querySelector('.cards');
-//попапы
-const authorPopup = document.querySelector('#popup_author');//author name/status popup
+const authorPopup = document.querySelector('#popup_author');
 const authorElement = authorPopup.querySelector('.popup__container');
-const photoPopup = document.querySelector('#popup_card');//photo-add popup
+const photoPopup = document.querySelector('#popup_card');
 const photoElement = photoPopup.querySelector('.popup__container');
-const originalPhoto = document.querySelector('#popup_photo');//original phhoto popup
-//поля ввода в формы
-const nameInput = authorElement.querySelector('.popup__input_name');//author name input
-const jobInput = authorElement.querySelector('.popup__input_job');//author status input
-//кнопки
-const editButton = document.querySelector('.profile__edit-button');//change author name/status button
-const addButton = document.querySelector('.profile__add-button');//add photo on the page
-const closeAuthorButton = authorPopup.querySelector('.popup__close');//author form close button
-const closePhotoButton = photoPopup.querySelector('.popup__close');//photo-add form close button
-const closeOriginalButton = originalPhoto.querySelector('.popup__close');//original photo close button
-// остальное
+const originalPhoto = document.querySelector('#popup_photo');
+const nameInput = authorElement.querySelector('.popup__input_name');
+const jobInput = authorElement.querySelector('.popup__input_job');
+const editButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button');
+const closeAuthorButton = authorPopup.querySelector('.popup__close');
+const closePhotoButton = photoPopup.querySelector('.popup__close');
+const closeOriginalButton = originalPhoto.querySelector('.popup__close');
 const placeValue = originalPhoto.querySelector('.popup__place');
 const imageValue = originalPhoto.querySelector('.popup__image');
-const placeInput = photoElement.querySelector('.popup__input_place');//photo-add place input
-const linkInput = photoElement.querySelector('.popup__input_link');//photo-add link input
-
+const placeInput = photoElement.querySelector('.popup__input_place');
+const linkInput = photoElement.querySelector('.popup__input_link');
 
 function openClosePopup(popup) {
-  if(popup.id ==='popup_author') {
+  if((popup.id ==='popup_author') && (!popup.classList.contains('popup_opened'))) {
    nameInput.value = profileName.textContent;
    jobInput.value = profileJob.textContent;
   }
-  else if (popup.id ==='popup_card') {
+  else if ((popup.id ==='popup_card') && (!popup.classList.contains('popup_opened'))) {
   photoElement.reset();
   }
  popup.classList.toggle('popup_opened');
 }
 
 //функция для просмотра оригинала фото
-function openCloseOriginal(photoPlace, photoLink) {
-  if (!originalPhoto.classList.contains('popup_opened')) {
-    placeValue.textContent = photoPlace;
-    imageValue.src = photoLink;
-    imageValue.alt = photoPlace;
-}
+function openOriginal(photo) {
+  const name = photo.target.alt;
+  imageValue.src = photo.target.currentSrc;
+  imageValue.alt = name;
+  placeValue.textContent = name;
   openClosePopup(originalPhoto);
+}
+
+function closeOriginal() {
+  originalPhoto.classList.remove('popup_opened');
 }
 
 function pressLike(evt) {
@@ -78,7 +76,7 @@ function pressLike(evt) {
 
 function pressDelete(evt) {
   evt.target.closest('.card').removeEventListener('click', pressLike);
-  evt.target.closest('.card').removeEventListener('click', openCloseOriginal);
+  evt.target.closest('.card').removeEventListener('click', openOriginal);
   evt.target.closest('.card').remove();
 }
 
@@ -98,8 +96,7 @@ function addPhoto(place, link) {
   cardElement.querySelector('.card__like').addEventListener('click', pressLike);
 
   cardElement.querySelector('.card__delete').addEventListener('click', pressDelete, {once : true});
-  cardImageElement.addEventListener('click', () =>
-openCloseOriginal(place, link));
+  cardImageElement.addEventListener('click', openOriginal);
 
   createContent(cardsSection, cardElement);
 }
@@ -118,13 +115,13 @@ function formSubmitPhoto (evt) {
   openClosePopup(photoPopup);
 };
 
-authorElement.addEventListener('submit', formSubmitAuthor);//save new name\status
-editButton.addEventListener('click', () => openClosePopup(authorPopup));//change name\status
-closeAuthorButton.addEventListener('click', () => openClosePopup(authorPopup));//close authorPopup
+authorElement.addEventListener('submit', formSubmitAuthor);
+editButton.addEventListener('click', () => openClosePopup(authorPopup));
+closeAuthorButton.addEventListener('click', () => openClosePopup(authorPopup));
 photoElement.addEventListener('submit', formSubmitPhoto);
-addButton.addEventListener('click', () => openClosePopup(photoPopup));//open photo-add popup
-closePhotoButton.addEventListener('click', () => openClosePopup(photoPopup));//close photo-add popup
-closeOriginalButton.addEventListener('click', openCloseOriginal);//close original popup
+addButton.addEventListener('click', () => openClosePopup(photoPopup));
+closePhotoButton.addEventListener('click', () => openClosePopup(photoPopup));
+closeOriginalButton.addEventListener('click', closeOriginal);
 
 initialCards.forEach((item) => {
   addPhoto(item.name,item.link);
