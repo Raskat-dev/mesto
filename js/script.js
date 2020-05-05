@@ -80,8 +80,8 @@ function pressDelete(evt) {
   evt.target.closest('.card').remove();
 }
 
-function createContent(block, element) {
-  block.prepend(element);
+function createContent(photoPlace, photoLink) {
+  cardsSection.prepend(addPhoto(photoPlace, photoLink));
 }
 
 function addPhoto(place, link) {
@@ -98,7 +98,7 @@ function addPhoto(place, link) {
   cardElement.querySelector('.card__delete').addEventListener('click', pressDelete, {once : true});
   cardImageElement.addEventListener('click', openOriginal);
 
-  createContent(cardsSection, cardElement);
+  return cardElement
 }
 //функция для сохранения ввода
 function formSubmitAuthor (evt) {
@@ -109,7 +109,7 @@ function formSubmitAuthor (evt) {
 }
 function formSubmitPhoto (evt) {
   evt.preventDefault();
-  addPhoto(placeInput.value, linkInput.value);
+  createContent(placeInput.value, linkInput.value);
   placeInput.value = '';
   linkInput.value = '';
   openClosePopup(photoPopup);
@@ -124,5 +124,5 @@ closePhotoButton.addEventListener('click', () => openClosePopup(photoPopup));
 closeOriginalButton.addEventListener('click', closeOriginal);
 
 initialCards.forEach((item) => {
-  addPhoto(item.name,item.link);
+  createContent(item.name, item.link);
 });
