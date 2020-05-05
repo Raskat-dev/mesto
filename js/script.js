@@ -80,10 +80,6 @@ function pressDelete(evt) {
   evt.target.closest('.card').remove();
 }
 
-function createContent(photoPlace, photoLink) {
-  cardsSection.prepend(addPhoto(photoPlace, photoLink));
-}
-
 function addPhoto(place, link) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardImageElement = cardElement.querySelector('.card__image');
@@ -99,6 +95,10 @@ function addPhoto(place, link) {
   cardImageElement.addEventListener('click', openOriginal);
 
   return cardElement
+}
+
+function createContent(photoPlace, photoLink) {
+  cardsSection.prepend(addPhoto(photoPlace, photoLink));
 }
 //функция для сохранения ввода
 function formSubmitAuthor (evt) {
