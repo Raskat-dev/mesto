@@ -19,9 +19,9 @@
           <div class="profile__information">
             <div class="profile__user">
               <h1 class="profile__name">Жак-Ив Кусто</h1>
-              <p class="profile__status">Исследователь океана</p>
+              <button class="profile__edit-button" type="button" aria-label="редактировать"></button>
             </div>
-            <button class="profile__edit-button" type="button" aria-label="редактировать"></button>
+            <p class="profile__status">Исследователь океана</p>
           </div>
           <button class="profile__add-button" type="button" aria-label="добавить фото"></button>
         </section>
@@ -43,20 +43,32 @@
       </li>
     </template>
     <div id="popup_author" class="popup">
-      <form class="popup__container" method="post" action="#" name="popup">
+      <form class="popup__container" id="author-container" method="post" action="#" name="popup" novalidate>
         <button class="popup__close" type="button" aria-label="закрыть"></button>
         <h3 class="popup__title">Редактировать профиль</h3>
-        <input class="popup__input popup__input_name" type="text" value ="Жак-Ив Кусто" placeholder="Введите имя" name="Name" required>
-        <input class="popup__input popup__input_job" type="text" value ="Исследователь океана" placeholder="Род занятий" name="Job" required>
+        <div class="popup__input-field">
+         <input id="name-input" class="popup__input popup__input_name" type="text" value ="Жак-Ив Кусто" placeholder="Введите имя" name="Name" required minlength="2" maxlength="40" pattern="[A-Za-zА-ЯЁа-яё -]{1,}">
+          <span id="name-input-error" class="popup__input-error"></span>
+        </div>
+        <div class="popup__input-field">
+          <input id="job-input" class="popup__input popup__input_job" type="text" value ="Исследователь океана" placeholder="Род занятий" name="Job" required minlength="2" maxlength="200">
+          <span id="job-input-error" class="popup__input-error"></span>
+        </div>
         <button class="popup__save" type="submit" aria-label="сохранить">Сохранить</button>
       </form>
     </div>
     <div id="popup_card" class="popup">
-      <form class="popup__container" method="post" action="#" name="popup">
+      <form class="popup__container" id="photo-container" method="post" action="#" name="popup" novalidate>
         <button class="popup__close" type="button" aria-label="закрыть"></button>
         <h3 class="popup__title">Новое место</h3>
-        <input class="popup__input popup__input_place" type="text" placeholder="Название" name="Place" required>
-        <input class="popup__input popup__input_link" type="url" placeholder="Ссылка на картинку" name="Link" required>
+        <div class="popup__input-field">
+          <input id="place-input" class="popup__input popup__input_place" type="text" placeholder="Название" name="Place" required minlength="1" maxlength="30">
+          <span id="place-input-error" class="popup__input-error"></span>
+        </div>
+        <div class="popup__input-field">
+          <input id="link-input" class="popup__input popup__input_link" type="url" placeholder="Ссылка на картинку" name="Link" required>
+          <span id="link-input-error" class="popup__input-error"></span>
+        </div>
         <button class="popup__save" type="submit" aria-label="сохранить">Сохранить</button>
       </form>
     </div>
@@ -68,6 +80,7 @@
         </div>
     </div>
     <script src="./js/script.js"></script>
+    <script src="./js/validate.js"></script>
   </div>
   </body>
 </html>
