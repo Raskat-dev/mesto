@@ -53,12 +53,12 @@ function openClosePopup(popup) {
    nameInput.value = profileName.textContent;
    jobInput.value = profileJob.textContent;
    clearInputs (popup);
-   toggleButtonState (inputs, buttonSave, formObject);
+   toggleButtonState (inputs, buttonSave, object);
   }
   else if ((popup === photoPopup) && (!popup.classList.contains('popup_opened'))) {
    photoElement.reset();
    clearInputs (popup);
-   toggleButtonState (inputs, buttonSave, formObject);
+   toggleButtonState (inputs, buttonSave, object);
   }
  popup.classList.toggle('popup_opened');
 }
@@ -67,7 +67,7 @@ function clearInputs (popup) {
   const form = popup.querySelector('.popup__container');
   inputs = Array.from(form.querySelectorAll('.popup__input'));
   inputs.forEach((inputElement) => {
-      hideInputError(form, inputElement, formObject);
+      hideInputError(form, inputElement, object);
     })
 }
 
