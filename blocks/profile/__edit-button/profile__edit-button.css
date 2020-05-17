@@ -10,6 +10,7 @@
   background-repeat: no-repeat;
   background-size: 10px;
   background-position: center;
+  align-self: flex-start;
 }
 
 .profile__edit-button:hover {
