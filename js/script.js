@@ -46,29 +46,32 @@ const imageValue = originalPhoto.querySelector('.popup__image');
 const placeInput = photoElement.querySelector('.popup__input_place');
 const linkInput = photoElement.querySelector('.popup__input_link');
 
+function clearInputs (popup) {
+  const form = popup.querySelector('.popup__container');
+  const buttonSave = popup.querySelector('.popup__save');
+  const inputs = Array.from(form.querySelectorAll('.popup__input'));
+  inputs.forEach((inputElement) => {
+      hideInputError(form, inputElement, formConfig);
+    })
+  toggleButtonState (inputs, buttonSave, formConfig);
+}
+
 function openClosePopup(popup) {
   const inputs = Array.from(popup.querySelectorAll('.popup__input'));
   const buttonSave = popup.querySelector('.popup__save');
-  if((popup === authorPopup) && (!popup.classList.contains('popup_opened'))) {
+  const isOpend = popup.classList.contains('popup_opened');
+  if ((popup === authorPopup) && (!isOpend)) {
    nameInput.value = profileName.textContent;
    jobInput.value = profileJob.textContent;
    clearInputs (popup);
-   toggleButtonState (inputs, buttonSave, object);
+   document.addEventListener('keydown', escKeydown, {once : true});
   }
-  else if ((popup === photoPopup) && (!popup.classList.contains('popup_opened'))) {
+  if ((popup === photoPopup) && (!isOpend)) {
    photoElement.reset();
    clearInputs (popup);
-   toggleButtonState (inputs, buttonSave, object);
+   document.addEventListener('keydown', escKeydown, {once : true});
   }
  popup.classList.toggle('popup_opened');
-}
-
-function clearInputs (popup) {
-  const form = popup.querySelector('.popup__container');
-  inputs = Array.from(form.querySelectorAll('.popup__input'));
-  inputs.forEach((inputElement) => {
-      hideInputError(form, inputElement, object);
-    })
 }
 
 //функция для просмотра оригинала фото
@@ -78,10 +81,7 @@ function openOriginal(photo) {
   imageValue.alt = name;
   placeValue.textContent = name;
   openClosePopup(originalPhoto);
-}
-
-function closeOriginal() {
-  originalPhoto.classList.remove('popup_opened');
+  document.addEventListener('keydown', escKeydown, {once : true});
 }
 
 function pressLike(evt) {
@@ -130,28 +130,13 @@ function formSubmitPhoto (evt) {
 };
 
 const escKeydown = function(evt) {
-  if ((evt.keyCode === 27) && (authorPopup.classList.contains('popup_opened')))  {
-    openClosePopup(authorPopup);
-  }
-  else if ((evt.keyCode === 27) && (photoPopup.classList.contains('popup_opened'))) {
-     openClosePopup(photoPopup);
-  }
-  else if ((evt.keyCode === 27) && (originalPhoto.classList.contains('popup_opened'))) {
-    closeOriginal();
-  }
-};
-
-function closePopup (evt) {
-  if (evt.target === authorPopup) {
-    openClosePopup(authorPopup);
-  }
-  else if (evt.target === photoPopup) {
-    openClosePopup(photoPopup)
-  }
-  else if (evt.target === originalPhoto) {
-    closeOriginal();
-  }
+  const openedForm = document.querySelector('.popup_opened');
+  if (evt.key === 'Escape') {
+    if (openedForm)
+    openClosePopup(openedForm);
+  };
 }
+
 
 authorElement.addEventListener('submit', formSubmitAuthor);
 editButton.addEventListener('click', () => openClosePopup(authorPopup));
@@ -159,11 +144,12 @@ closeAuthorButton.addEventListener('click', () => openClosePopup(authorPopup));
 photoElement.addEventListener('submit', formSubmitPhoto);
 addButton.addEventListener('click', () => openClosePopup(photoPopup));
 closePhotoButton.addEventListener('click', () => openClosePopup(photoPopup));
-closeOriginalButton.addEventListener('click', closeOriginal);
-document.addEventListener('keydown', escKeydown);
-authorPopup.addEventListener('click', closePopup);
-photoPopup.addEventListener('click', closePopup);
-originalPhoto.addEventListener('click', closePopup);
+closeOriginalButton.addEventListener('click', () => openClosePopup(originalPhoto));
+document.addEventListener('click',  (event) => {
+  if (event.target.classList.contains('popup_opened')) {
+    openClosePopup(event.target)
+  }
+});
 
 initialCards.forEach((item) => {
   createContent(item.name, item.link);
