@@ -1,4 +1,4 @@
-const object = {
+const formConfig = {
   formSelector: '.popup__container',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__save',
@@ -38,6 +38,20 @@ const hasInvalidInput = (inputList) => {
     return !inputElement.validity.valid;
   })
 };
+// Функция принимает массив полей ввода
+// и элемент кнопки, состояние которой нужно менять
+const toggleButtonState = (inputList, buttonElement, formObject) => {
+  // Если есть хотя бы один невалидный инпут
+  if (hasInvalidInput(inputList)) {
+    // сделай кнопку неактивной
+    buttonElement.classList.add(formObject.inactiveButtonClass);
+    buttonElement.disabled = true;
+  } else {
+        // иначе сделай кнопку активной
+    buttonElement.classList.remove(formObject.inactiveButtonClass);
+    buttonElement.disabled = false;
+  }
+};
 
 const setEventListeners = (formElement, formObject) => {
   const inputList = Array.from(formElement.querySelectorAll(formObject.inputSelector));
@@ -55,22 +69,6 @@ const setEventListeners = (formElement, formObject) => {
   });
 };
 
-// Функция принимает массив полей ввода
-// и элемент кнопки, состояние которой нужно менять
-const toggleButtonState = (inputList, buttonElement, formObject) => {
-  // Если есть хотя бы один невалидный инпут
-  if (hasInvalidInput(inputList)) {
-    // сделай кнопку неактивной
-    buttonElement.classList.add(formObject.inactiveButtonClass);
-    buttonElement.disabled = true;
-  } else {
-        // иначе сделай кнопку активной
-    buttonElement.classList.remove(formObject.inactiveButtonClass);
-    buttonElement.disabled = false;
-  }
-};
-
-
 //функция создания массива форм страницы, принимает объект - собирает форму
 const enableValidation = (formObject) => {
   const formList = Array.from(document.querySelectorAll(formObject.formSelector));
@@ -79,4 +77,4 @@ const enableValidation = (formObject) => {
 });
 }
 
-enableValidation(object);
+enableValidation(formConfig);
