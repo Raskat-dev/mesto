@@ -47,9 +47,9 @@ const placeInput = photoElement.querySelector('.popup__input_place');
 const linkInput = photoElement.querySelector('.popup__input_link');
 
 function clearInputs (popup) {
-  const form = popup.querySelector('.popup__container');
-  const buttonSave = popup.querySelector('.popup__save');
-  const inputs = Array.from(form.querySelectorAll('.popup__input'));
+  const form = popup.querySelector(formConfig.formSelector);
+  const buttonSave = popup.querySelector(formConfig.submitButtonSelector);
+  const inputs = Array.from(form.querySelectorAll(formConfig.inputSelector));
   inputs.forEach((inputElement) => {
       hideInputError(form, inputElement, formConfig);
     })
@@ -57,19 +57,21 @@ function clearInputs (popup) {
 }
 
 function openClosePopup(popup) {
-  const inputs = Array.from(popup.querySelectorAll('.popup__input'));
-  const buttonSave = popup.querySelector('.popup__save');
   const isOpend = popup.classList.contains('popup_opened');
   if ((popup === authorPopup) && (!isOpend)) {
    nameInput.value = profileName.textContent;
    jobInput.value = profileJob.textContent;
    clearInputs (popup);
-   document.addEventListener('keydown', escKeydown, {once : true});
   }
   if ((popup === photoPopup) && (!isOpend)) {
    photoElement.reset();
    clearInputs (popup);
-   document.addEventListener('keydown', escKeydown, {once : true});
+  }
+  if (!isOpend) {
+    document.addEventListener('keydown', escKeydown);
+  }
+  else {
+    document.removeEventListener('keydown', escKeydown);
   }
  popup.classList.toggle('popup_opened');
 }
@@ -81,7 +83,7 @@ function openOriginal(photo) {
   imageValue.alt = name;
   placeValue.textContent = name;
   openClosePopup(originalPhoto);
-  document.addEventListener('keydown', escKeydown, {once : true});
+  document.addEventListener('keydown', escKeydown);
 }
 
 function pressLike(evt) {
@@ -89,9 +91,10 @@ function pressLike(evt) {
 }
 
 function pressDelete(evt) {
-  evt.target.closest('.card').removeEventListener('click', pressLike);
-  evt.target.closest('.card').removeEventListener('click', openOriginal);
-  evt.target.closest('.card').remove();
+  const targetCard = evt.target.closest('.card')
+  targetCard.removeEventListener('click', pressLike);
+  targetCard.removeEventListener('click', openOriginal);
+  targetCard.remove();
 }
 
 function addPhoto(place, link) {
