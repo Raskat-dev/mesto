@@ -56,33 +56,37 @@ function clearInputs (popup) {
   toggleButtonState (inputs, buttonSave, formConfig);
 }
 
-function openClosePopup(popup) {
-  const isOpend = popup.classList.contains('popup_opened');
-  if ((popup === authorPopup) && (!isOpend)) {
-   nameInput.value = profileName.textContent;
-   jobInput.value = profileJob.textContent;
-   clearInputs (popup);
-  }
-  if ((popup === photoPopup) && (!isOpend)) {
-   photoElement.reset();
-   clearInputs (popup);
-  }
-  if (!isOpend) {
-    document.addEventListener('keydown', escKeydown);
-  }
-  else {
-    document.removeEventListener('keydown', escKeydown);
-  }
- popup.classList.toggle('popup_opened');
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', escKeydown);
+  document.removeEventListener('click', overlayClick);
 }
 
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+  document.addEventListener('keydown', escKeydown);
+  document.addEventListener('click', overlayClick);
+}
+
+function openAuthor () {
+  nameInput.value = profileName.textContent;
+  jobInput.value = profileJob.textContent;
+  clearInputs (authorPopup);
+  openPopup(authorPopup);
+}
+
+function openPhoto () {
+  photoElement.reset();
+  clearInputs (photoPopup);
+  openPopup(photoPopup);
+}
 //функция для просмотра оригинала фото
 function openOriginal(photo) {
   const name = photo.target.alt;
   imageValue.src = photo.target.currentSrc;
   imageValue.alt = name;
   placeValue.textContent = name;
-  openClosePopup(originalPhoto);
+  openPopup(originalPhoto);
   document.addEventListener('keydown', escKeydown);
 }
 
@@ -122,37 +126,38 @@ function formSubmitAuthor (evt) {
     evt.preventDefault();
     profileName.textContent = nameInput.value;
     profileJob.textContent = jobInput.value;
-    openClosePopup(authorPopup);
+    closePopup(authorPopup);
 }
 function formSubmitPhoto (evt) {
   evt.preventDefault();
   createContent(placeInput.value, linkInput.value);
   placeInput.value = '';
   linkInput.value = '';
-  openClosePopup(photoPopup);
+  closePopup(photoPopup);
 };
 
 const escKeydown = function(evt) {
   const openedForm = document.querySelector('.popup_opened');
   if (evt.key === 'Escape') {
     if (openedForm)
-    openClosePopup(openedForm);
+    closePopup(openedForm);
   };
 }
 
+const overlayClick = function(evt) {
+  const opnForm = document.querySelector('.popup_opened');
+  if (evt.target === opnForm) {
+    closePopup(opnForm);
+  }
+}
 
 authorElement.addEventListener('submit', formSubmitAuthor);
-editButton.addEventListener('click', () => openClosePopup(authorPopup));
-closeAuthorButton.addEventListener('click', () => openClosePopup(authorPopup));
+editButton.addEventListener('click', openAuthor);
+closeAuthorButton.addEventListener('click', () => closePopup(authorPopup));
 photoElement.addEventListener('submit', formSubmitPhoto);
-addButton.addEventListener('click', () => openClosePopup(photoPopup));
-closePhotoButton.addEventListener('click', () => openClosePopup(photoPopup));
-closeOriginalButton.addEventListener('click', () => openClosePopup(originalPhoto));
-document.addEventListener('click',  (event) => {
-  if (event.target.classList.contains('popup_opened')) {
-    openClosePopup(event.target)
-  }
-});
+addButton.addEventListener('click', openPhoto);
+closePhotoButton.addEventListener('click', () => closePopup(photoPopup));
+closeOriginalButton.addEventListener('click', () => closePopup(originalPhoto));
 
 initialCards.forEach((item) => {
   createContent(item.name, item.link);
