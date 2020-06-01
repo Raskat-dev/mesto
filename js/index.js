@@ -1,3 +1,6 @@
+import FormValidator from './FormValidator.js';
+import Card from './Card.js';
+
 //задаем все переменные сразу
 const initialCards = [
   {
@@ -25,9 +28,18 @@ const initialCards = [
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
+
+const formConfig = {
+  formSelector: '.popup__container',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save',
+  inactiveButtonClass: 'popup__save_status_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+}
+
 const profileName = document.querySelector('.profile__name');
 const profileJob = document.querySelector('.profile__status');
-const cardTemplate = document.querySelector('#card-template').content;
 const cardsSection = document.querySelector('.cards');
 const authorPopup = document.querySelector('#popup_author');
 const authorElement = authorPopup.querySelector('#author-container');
@@ -41,8 +53,6 @@ const addButton = document.querySelector('.profile__add-button');
 const closeAuthorButton = authorPopup.querySelector('.popup__close');
 const closePhotoButton = photoPopup.querySelector('.popup__close');
 const closeOriginalButton = originalPhoto.querySelector('.popup__close');
-const placeValue = originalPhoto.querySelector('.popup__place');
-const imageValue = originalPhoto.querySelector('.popup__image');
 const placeInput = photoElement.querySelector('.popup__input_place');
 const linkInput = photoElement.querySelector('.popup__input_link');
 
@@ -50,10 +60,16 @@ function clearInputs (popup) {
   const form = popup.querySelector(formConfig.formSelector);
   const buttonSave = popup.querySelector(formConfig.submitButtonSelector);
   const inputs = Array.from(form.querySelectorAll(formConfig.inputSelector));
-  inputs.forEach((inputElement) => {
-      hideInputError(form, inputElement, formConfig);
-    })
-  toggleButtonState (inputs, buttonSave, formConfig);
+  if (popup === authorPopup) {
+    inputs.forEach((inputElement) => {
+    validateAuthorForm.hideInputError(inputElement)})
+    validateAuthorForm.toggleButtonState(inputs, buttonSave);
+    }
+  if (popup === photoPopup) {
+    inputs.forEach((inputElement) => {
+    validatePhotoForm.hideInputError(inputElement)})
+    validatePhotoForm.toggleButtonState(inputs, buttonSave);
+  }
 }
 
 function closePopup(popup) {
@@ -80,46 +96,11 @@ function openPhoto () {
   clearInputs (photoPopup);
   openPopup(photoPopup);
 }
-//функция для просмотра оригинала фото
-function openOriginal(photo) {
-  const name = photo.target.alt;
-  imageValue.src = photo.target.currentSrc;
-  imageValue.alt = name;
-  placeValue.textContent = name;
-  openPopup(originalPhoto);
-  document.addEventListener('keydown', escKeydown);
-}
 
-function pressLike(evt) {
-  evt.target.classList.toggle('card__like_active');
-}
-
-function pressDelete(evt) {
-  const targetCard = evt.target.closest('.card')
-  targetCard.removeEventListener('click', pressLike);
-  targetCard.removeEventListener('click', openOriginal);
-  targetCard.remove();
-}
-
-function addPhoto(place, link) {
-  const cardElement = cardTemplate.cloneNode(true);
-  const cardImageElement = cardElement.querySelector('.card__image');
-  const cardTextElement = cardElement.querySelector('.card__title');
-
-  cardTextElement.textContent = place;
-  cardImageElement.src = link;
-  cardImageElement.alt = place;
-
-  cardElement.querySelector('.card__like').addEventListener('click', pressLike);
-
-  cardElement.querySelector('.card__delete').addEventListener('click', pressDelete, {once : true});
-  cardImageElement.addEventListener('click', openOriginal);
-
-  return cardElement
-}
-
-function createContent(photoPlace, photoLink) {
-  cardsSection.prepend(addPhoto(photoPlace, photoLink));
+function createContent (photo) {
+  const card = new Card(photo)
+  const cardElement = card.generateCard();
+  cardsSection.prepend(cardElement);
 }
 //функция для сохранения ввода
 function formSubmitAuthor (evt) {
@@ -129,14 +110,18 @@ function formSubmitAuthor (evt) {
     closePopup(authorPopup);
 }
 function formSubmitPhoto (evt) {
+  const newPhotoObject = {
+    name: placeInput.value,
+    link: linkInput.value
+  }
   evt.preventDefault();
-  createContent(placeInput.value, linkInput.value);
+  createContent(newPhotoObject);
   placeInput.value = '';
   linkInput.value = '';
   closePopup(photoPopup);
-};
+}
 
-const escKeydown = function(evt) {
+function escKeydown (evt) {
   const openedForm = document.querySelector('.popup_opened');
   if (evt.key === 'Escape') {
     if (openedForm)
@@ -144,12 +129,14 @@ const escKeydown = function(evt) {
   };
 }
 
-const overlayClick = function(evt) {
+function overlayClick (evt) {
   const opnForm = document.querySelector('.popup_opened');
   if (evt.target === opnForm) {
     closePopup(opnForm);
   }
 }
+
+export { escKeydown, overlayClick, closePopup, openPopup, originalPhoto };
 
 authorElement.addEventListener('submit', formSubmitAuthor);
 editButton.addEventListener('click', openAuthor);
@@ -157,8 +144,15 @@ closeAuthorButton.addEventListener('click', () => closePopup(authorPopup));
 photoElement.addEventListener('submit', formSubmitPhoto);
 addButton.addEventListener('click', openPhoto);
 closePhotoButton.addEventListener('click', () => closePopup(photoPopup));
-closeOriginalButton.addEventListener('click', () => closePopup(originalPhoto));
+closeOriginalButton.addEventListener('click', () =>
+  closePopup(originalPhoto));
 
 initialCards.forEach((item) => {
-  createContent(item.name, item.link);
+  createContent(item);
 });
+
+//функция создания массива форм страницы, принимает объект - собирает форму
+const validateAuthorForm = new FormValidator(formConfig, authorElement);
+validateAuthorForm.enableValidation();
+const validatePhotoForm = new FormValidator(formConfig, photoElement);
+validatePhotoForm.enableValidation();
