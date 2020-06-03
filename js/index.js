@@ -56,19 +56,38 @@ const closeOriginalButton = originalPhoto.querySelector('.popup__close');
 const placeInput = photoElement.querySelector('.popup__input_place');
 const linkInput = photoElement.querySelector('.popup__input_link');
 
+
+function clearEachInput (formName, inputs, buttonSave) {
+  inputs.forEach((inputElement) => {
+    formName._hideInputError(inputElement)})
+    formName._toggleButtonState(inputs, buttonSave);
+}
+
 function clearInputs (popup) {
   const form = popup.querySelector(formConfig.formSelector);
   const buttonSave = popup.querySelector(formConfig.submitButtonSelector);
   const inputs = Array.from(form.querySelectorAll(formConfig.inputSelector));
+
   if (popup === authorPopup) {
-    inputs.forEach((inputElement) => {
-    validateAuthorForm.hideInputError(inputElement)})
-    validateAuthorForm.toggleButtonState(inputs, buttonSave);
+    clearEachInput(validateAuthorForm, inputs, buttonSave);
     }
   if (popup === photoPopup) {
-    inputs.forEach((inputElement) => {
-    validatePhotoForm.hideInputError(inputElement)})
-    validatePhotoForm.toggleButtonState(inputs, buttonSave);
+    clearEachInput(validatePhotoForm, inputs, buttonSave);
+  }
+}
+
+function escKeydown (evt) {
+  if (evt.key === 'Escape') {
+    const openedForm = document.querySelector('.popup_opened');
+    if (openedForm)
+    closePopup(openedForm);
+  }
+}
+
+function overlayClick (evt) {
+  const opnForm = document.querySelector('.popup_opened');
+  if (evt.target === opnForm) {
+    closePopup(opnForm);
   }
 }
 
@@ -97,7 +116,7 @@ function openPhoto () {
   openPopup(photoPopup);
 }
 
-function createContent (photo) {
+function createCard (photo) {
   const card = new Card(photo)
   const cardElement = card.generateCard();
   cardsSection.prepend(cardElement);
@@ -115,28 +134,11 @@ function formSubmitPhoto (evt) {
     link: linkInput.value
   }
   evt.preventDefault();
-  createContent(newPhotoObject);
+  createCard(newPhotoObject);
   placeInput.value = '';
   linkInput.value = '';
   closePopup(photoPopup);
 }
-
-function escKeydown (evt) {
-  const openedForm = document.querySelector('.popup_opened');
-  if (evt.key === 'Escape') {
-    if (openedForm)
-    closePopup(openedForm);
-  };
-}
-
-function overlayClick (evt) {
-  const opnForm = document.querySelector('.popup_opened');
-  if (evt.target === opnForm) {
-    closePopup(opnForm);
-  }
-}
-
-export { escKeydown, overlayClick, closePopup, openPopup, originalPhoto };
 
 authorElement.addEventListener('submit', formSubmitAuthor);
 editButton.addEventListener('click', openAuthor);
@@ -148,7 +150,7 @@ closeOriginalButton.addEventListener('click', () =>
   closePopup(originalPhoto));
 
 initialCards.forEach((item) => {
-  createContent(item);
+  createCard(item);
 });
 
 //функция создания массива форм страницы, принимает объект - собирает форму

@@ -13,22 +13,22 @@ export default class FormValidator {
     inputElement.classList.add(this._inputErrorClass);
     errorElement.textContent = errorMessage;
     errorElement.classList.add(this._errorClass);
-  };
+  }
 
-  hideInputError (inputElement) {
+  _hideInputError (inputElement) {
     const errorElement = this._formName.querySelector(`#${inputElement.id}-error`);
     inputElement.classList.remove(this._inputErrorClass);
     errorElement.classList.remove(this._errorClass);
     errorElement.textContent = '';
-  };
+  }
 
   _checkInputValidity (inputElement) {
     if (!inputElement.validity.valid) {
       this._showInputError(inputElement, inputElement.validationMessage);
     } else {
-      this.hideInputError(inputElement);
+      this._hideInputError(inputElement);
     }
-  };
+  }
 
   _hasInvalidInput (inputList) {
     // проходим по этому массиву методом some
@@ -38,9 +38,9 @@ export default class FormValidator {
       // hasInvalidInput вернёт true
       return !inputElement.validity.valid;
     })
-  };
+  }
 
-  toggleButtonState(inputList, buttonElement) {
+  _toggleButtonState(inputList, buttonElement) {
     // Если есть хотя бы один невалидный инпут
     if (this._hasInvalidInput(inputList)) {
       // сделай кнопку неактивной
@@ -51,12 +51,12 @@ export default class FormValidator {
       buttonElement.classList.remove(this._inactiveButtonClass);
       buttonElement.disabled = false;
     }
-  };
+  }
 
   enableValidation () {
     const inputList = Array.from(this._formName.querySelectorAll(this._inputSelector));
     const buttonElement = this._formName.querySelector(this._submitButtonSelector);
-    this.toggleButtonState(inputList, buttonElement);
+    this._toggleButtonState(inputList, buttonElement);
     inputList.forEach((inputElement) => {
        // каждому полю добавим обработчик события input. Провяем все символы
       inputElement.addEventListener('input', () => {
@@ -64,8 +64,8 @@ export default class FormValidator {
         // передав ей форму и проверяемый элемент
         this._checkInputValidity(inputElement);
         //вызов toggleButtonState
-        this.toggleButtonState(inputList, buttonElement);
+        this._toggleButtonState(inputList, buttonElement);
       });
     });
-  };
+  }
 }
