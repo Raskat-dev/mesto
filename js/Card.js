@@ -17,6 +17,11 @@ export default class Card {
     return cardElement
   }
 
+_overlayClick(evt) {
+    if (evt.target === originalPhoto) {
+       this._closeOriginal()
+}}
+
   _openOriginal() {
     imageValue.src = this._link;
     imageValue.alt = this._name;
@@ -27,12 +32,12 @@ export default class Card {
           if (originalPhoto.classList.contains('popup_opened'))
           this._closeOriginal()
         }}, {once: true});
-    document.addEventListener('click', (evt) => {
-          if (evt.target === originalPhoto) {
-             this._closeOriginal()
-           }
-          });
-     }
+
+     document.addEventListener('click', (evt) => {
+      if (evt.target === originalPhoto) {
+         this._closeOriginal()
+       }});
+ }
 
   _closeOriginal() {
     originalPhoto.classList.remove('popup_opened');

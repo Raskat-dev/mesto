@@ -57,10 +57,40 @@ const placeInput = photoElement.querySelector('.popup__input_place');
 const linkInput = photoElement.querySelector('.popup__input_link');
 
 
+function hideInputError (inputElement, formName) {
+  const errorElement = formName.querySelector(`#${inputElement.id}-error`);
+  inputElement.classList.remove(formConfig.inputErrorClass);
+  errorElement.classList.remove(formConfig._errorClass);
+  errorElement.textContent = '';
+}
+
+function hasInvalidInput (inputList) {
+  // проходим по этому массиву методом some
+  return inputList.some((inputElement) => {
+    // Если поле не валидно, колбэк вернёт true
+    // Обход массива прекратится и вся фунцкция
+    // hasInvalidInput вернёт true
+    return !inputElement.validity.valid;
+  })
+}
+
+function toggleButtonState(inputList, buttonElement) {
+  // Если есть хотя бы один невалидный инпут
+  if (hasInvalidInput(inputList)) {
+    // сделай кнопку неактивной
+    buttonElement.classList.add(formConfig.inactiveButtonClass);
+    buttonElement.disabled = true;
+  } else {
+        // иначе сделай кнопку активной
+    buttonElement.classList.remove(formConfig.inactiveButtonClass);
+    buttonElement.disabled = false;
+  }
+}
+
 function clearEachInput (formName, inputs, buttonSave) {
   inputs.forEach((inputElement) => {
-    formName._hideInputError(inputElement)})
-    formName._toggleButtonState(inputs, buttonSave);
+    hideInputError(inputElement, formName)})
+    toggleButtonState(inputs, buttonSave);
 }
 
 function clearInputs (popup) {
@@ -69,10 +99,10 @@ function clearInputs (popup) {
   const inputs = Array.from(form.querySelectorAll(formConfig.inputSelector));
 
   if (popup === authorPopup) {
-    clearEachInput(validateAuthorForm, inputs, buttonSave);
+    clearEachInput(authorPopup, inputs, buttonSave);
     }
   if (popup === photoPopup) {
-    clearEachInput(validatePhotoForm, inputs, buttonSave);
+    clearEachInput(photoPopup, inputs, buttonSave);
   }
 }
 
