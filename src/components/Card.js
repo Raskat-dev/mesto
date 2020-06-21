@@ -13,7 +13,7 @@ export default class Card {
     return cardElement
   }
 _openOriginal() {
-  this._handleCardClick();
+  this._handleCardClick(this._name, this._link);
  }
   _pressLike() {
     this._card.querySelector('.card__like').classList.toggle('card__like_active');

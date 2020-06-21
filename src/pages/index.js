@@ -21,7 +21,7 @@ import PopupWithForm from '../components/PopupWithForm.js'
 import UserInfo from '../components/UserInfo.js';
 
 // создание базовых карточек
-const currentPhoto = new PopupWithImage (originalPhoto);
+const currentPhoto = new PopupWithImage (originalPhoto, '.popup__image', '.popup__place');
 
 const defaultCardList = new Section({items: initialCards,
   renderer: (photo) => {
@@ -53,11 +53,11 @@ const addPhotoForm = new PopupWithForm(photoPopup, {
 }}, validatePhotoForm);
 
 //создаем объект с дефолтными данными пользователя
-const defaultUserInfo = new UserInfo({ name: profileName.textContent, description: profileJob.textContent });
+const defaultUserInfo = new UserInfo({ name: profileName.textContent, description: profileJob.textContent }, '.profile__name', '.profile__description');
 
 const addUserForm = new PopupWithForm(authorPopup, {
-  handleFormSubmit: (getInputResult) => {
-  defaultUserInfo.setUserInfo(getInputResult);
+  handleFormSubmit: (inputResult) => {
+  defaultUserInfo.setUserInfo(inputResult);
   addUserForm.close();
   }
 }, validateAuthorForm)

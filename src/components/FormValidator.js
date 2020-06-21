@@ -7,6 +7,8 @@ export default class FormValidator {
     this._inactiveButtonClass = formElements.inactiveButtonClass;
     this._inputErrorClass = formElements.inputErrorClass;
     this._errorClass = formElements.errorClass;
+    this._inputList = Array.from(this._formName.querySelectorAll(this._inputSelector));
+    this._buttonElement = this._formName.querySelector(this._submitButtonSelector);
   }
   _showInputError (inputElement, errorMessage)  {
     const errorElement = this._formName.querySelector(`#${inputElement.id}-error`);
@@ -54,34 +56,30 @@ export default class FormValidator {
   }
 
   enableValidation () {
-    const inputList = Array.from(this._formName.querySelectorAll(this._inputSelector));
-    const buttonElement = this._formName.querySelector(this._submitButtonSelector);
-    this._toggleButtonState(inputList, buttonElement);
-    inputList.forEach((inputElement) => {
+    this._toggleButtonState(this._inputList, this._buttonElement);
+    this._inputList.forEach((inputElement) => {
        // каждому полю добавим обработчик события input. Провяем все символы
       inputElement.addEventListener('input', () => {
         // Внутри колбэка вызовем checkInputValidity,
         // передав ей форму и проверяемый элемент
         this._checkInputValidity(inputElement);
         //вызов toggleButtonState
-        this._toggleButtonState(inputList, buttonElement);
+        this._toggleButtonState(this._inputList, this._buttonElement);
       });
     });
   }
-  clear(popup) {
-    const inputList = Array.from(popup.querySelector(this._formSelector).querySelectorAll(this._inputSelector));
-    const formButton = popup.querySelector(this._formSelector).querySelector(this._submitButtonSelector)
-    inputList.forEach((inputElement) => {
-      const spanElement = popup.querySelector(this._formSelector).querySelector(`#${inputElement.id}-error`);
+  clear() {
+    this._inputList.forEach((inputElement) => {
+      const errorElement = this._formName.querySelector(`#${inputElement.id}-error`);
       inputElement.classList.remove(this._inputErrorClass);
-      spanElement.classList.remove(this._errorClass);
-      spanElement.textContent = '';
+      errorElement.classList.remove(this._errorClass);
+      errorElement.textContent = '';
       if (!inputElement.value) {
-        formButton.classList.add(this._inactiveButtonClass);
-        formButton.disabled = true;
+        this._buttonElement.classList.add(this._inactiveButtonClass);
+        this._buttonElement.disabled = true;
       }  else {
-        formButton.classList.remove(this._inactiveButtonClass);
-        formButton.disabled = false;
+        this._buttonElement.classList.remove(this._inactiveButtonClass);
+        this._buttonElement.disabled = false;
       }
     });
   }
