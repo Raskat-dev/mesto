@@ -1,10 +1,19 @@
 import Popup from './Popup.js';
-import { formConfig } from '../utils/constants.js';
+const formConfig = {
+  formSelector: '.popup__container',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save',
+  inactiveButtonClass: 'popup__save_status_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+}
+
 export default class PopupWithForm extends Popup {
   constructor(popupSelector, { handleFormSubmit }, validator) {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
     this._validator = validator;
+    this._submit = this._hanldeSubmitForm.bind(this);
   }
   _getInputValues() {
     this._inputList = this._popup.querySelectorAll(formConfig.inputSelector);
@@ -20,7 +29,6 @@ export default class PopupWithForm extends Popup {
   }
   open() {
     super.open();
-    this._submit = this._hanldeSubmitForm.bind(this);
     this._popup.querySelector(formConfig.formSelector).addEventListener('submit', this._submit);
   }
 
