@@ -3,6 +3,7 @@
 @import url(./__container/popup__container.css);
 @import url(./__input/popup__input.css);
 @import url(./__title/popup__title.css);
+@import url(./__title/_modified/popup__title_delete.css);
 @import url(./__image/popup__image.css);
 @import url(./__place/popup__place.css);
 @import url(./__photo-position/popup__photo-position.css);
@@ -19,20 +20,11 @@
   top: 0;
   left: 0;
   z-index: 999;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -ms-flex-line-pack: center;
-      align-content: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: .3s linear;
-  -o-transition: .3s linear;
   transition: .3s linear;
 }
