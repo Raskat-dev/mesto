@@ -19,6 +19,10 @@ export default class UserInfo {
       avatar: this._avatar
     }
   }
+  getUserId() {
+    return `${this._id}`
+  }
+
   setUserNameInfo(userData) {
     this._name = userData.name;
     this._about = userData.about;

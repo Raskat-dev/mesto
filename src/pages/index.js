@@ -26,6 +26,14 @@ import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
 import PopupConfirm from '../components/PopupConfirm';
 
+//валидация форм
+const validateAuthorForm = new FormValidator(formConfig, authorElement);
+validateAuthorForm.enableValidation();
+const validatePhotoForm = new FormValidator(formConfig, photoElement);
+validatePhotoForm.enableValidation();
+const validateAvatarForm = new FormValidator(formConfig, avatarElement);
+validateAvatarForm.enableValidation();
+
 
 const deletePopupWindow = new PopupConfirm(deletePopup, { confirm: (card, cardClass) => {
   cardDelete(card, cardClass);
@@ -35,108 +43,100 @@ const openConfirmModal = function(card, cardClass) {
   deletePopupWindow.setCard(card, cardClass);
   deletePopupWindow.open();
 }
-//валидация форм
-const validateAuthorForm = new FormValidator(formConfig, authorElement);
-validateAuthorForm.enableValidation();
-const validatePhotoForm = new FormValidator(formConfig, photoElement);
-validatePhotoForm.enableValidation();
-const validateAvatarForm = new FormValidator(formConfig, avatarElement);
-validateAvatarForm.enableValidation();
-
 //Данные о пользователе с сервера
 const apiRequest = new Api ({
   url: 'https://mesto.nomoreparties.co/v1/cohort-12',
   token: 'c7046677-4ab5-42c0-bca8-fcae81104075'
 })
 //создаем объект с дефолтными данными пользователя
+const downloadStatus = function(formElement, status) {
+  if (status === true) {
+    formElement.querySelector('.popup__save').textContent = 'Сохранение...'
+    }
+  if (status === false) {
+    formElement.querySelector('.popup__save').textContent = 'Сохранить'
+    }
+  }
 
 const defaultUserInfo = new UserInfo({name: '', about: '', avatar: ''}, '.profile__name', '.profile__description', '.profile__avatar');
-const downloadUserInfo = function() {
-  apiRequest.getProfileInfo()
-  .then((result) => {
-    defaultUserInfo.setUserInfo(result);
-  })
-  .catch((err) => {
-    console.log(`Ошибка ${err.status}.`);
-  });
-}
-downloadUserInfo();
 
 //изменение данных пользователя
 const addUserForm = new PopupWithForm(authorPopup, {
   handleFormSubmit: (inputResult) => {
+    downloadStatus(authorElement, true);
     apiRequest.changeProfileInfo(inputResult)
     .then((res) => {
       defaultUserInfo.setUserNameInfo(res);
     })
     .catch((err) => {
       console.log(`Ошибка ${err}.`);
-    });
-  addUserForm.close();
+    })
+    .finally(() => {
+      addUserForm.close();
+      downloadStatus(authorElement, false);
+    })
   }
 }, validateAuthorForm)
 
 const addUserAvatar = new PopupWithForm(avatarPopup, {
   handleFormSubmit: (inputResult) => {
+    downloadStatus(avatarElement, true);
     apiRequest.changeProfileAvatar(inputResult)
     .then((res) => {
       defaultUserInfo.setUserAvatar(res);
     })
     .catch((err) => {
       console.log(`Ошибка ${err}.`);
-    });
-    addUserAvatar.close();
+    })
+    .finally(() => {
+      addUserAvatar.close();
+      downloadStatus(avatarElement, false);
+    })
   }
 }, validateAvatarForm)
 
-// создание базовых карточек
 const currentPhoto = new PopupWithImage (originalPhoto, '.popup__image', '.popup__place');
-//Карточки с сервера__________________
-//создаем секцию, куда будем пушить карточки
-const defaultCardList = new Section({items: {},
-  renderer: (photo) => {
-  const card = new Card({data: photo, handleCardClick: () => {
-    currentPhoto.open(photo);
-  }, handleDelete: () => openConfirmModal(photo, card), userId: 'ab1d038b506be9771e877439'});
+
+const createCard = function(cardItem, userId) {
+  const card = new Card({data: cardItem,
+    handleCardClick: () => {
+    currentPhoto.open(cardItem);
+  }, handleDelete: () => openConfirmModal(cardItems, card), 
+  addLike: () => cardLike(cardItem),
+  deleteLike:() => cardLikeDelete(cardItem) }, userId);
   const cardElement = card.generateCard();
-  defaultCardList.addItem(cardElement);
-}}, '.cards');
-//заполняем созданную секцию с помощью Api
-const downloadDefaultCards = function() {
-  apiRequest.getCardsFromServer()
-  .then((result) => {
-    defaultCardList.addDefaultItems(result);
-    defaultCardList.renderItems();
-  })
-  .catch((err) => {
-    console.log(`Ошибка ${err}.`);
-  });
+  cardList.addItem(cardElement); 
 }
-downloadDefaultCards();
+//функция для лайка карточки
+const cardLike = function(card) {
+  return apiRequest.addLike(card._id)
+}
+//функция для удаления лайка карточки
+const cardLikeDelete = function(card) {
+  return apiRequest.deleteLike(card._id)
+}
 
 //сабмит новой карточки
 const addPhotoForm = new PopupWithForm(photoPopup, {
   handleFormSubmit: (item) => {
+    downloadStatus(photoElement, true);
     apiRequest.addNewCard(item)
-    .then(res => console.log(res))
     .then((res) => {
-      const card = new Card({data: res,
-        handleCardClick: () => {
-        currentPhoto.open(res);
-      }, handleDelete: () => openConfirmModal(res, card), userId: 'ab1d038b506be9771e877439'})
-        const cardElement = card.generateCard();
-        defaultCardList.addItem(cardElement); 
+      createCard(res, res.owner._id);
     })
     .catch((err) => {
       console.log(`Ошибка ${err}.`);
-    });
-    addPhotoForm.close();
+    })
+    .finally(() => {
+      addPhotoForm.close();
+      downloadStatus(photoElement, false);
+    })
 }}, validatePhotoForm);
 
 const cardDelete = function(item, cardClass) {
   apiRequest.deleteCard(item._id)
-  .then((result) => {
-    cardClass._pressDelete();
+  .then(() => {
+    cardClass.pressDelete();
   })
   .catch((err) => {
     console.log(`Ошибка ${err}.`);
@@ -145,6 +145,24 @@ const cardDelete = function(item, cardClass) {
     deletePopupWindow.close();
   })
 }
+//Карточки с сервера__________________
+//создаем секцию, куда будем пушить карточки
+const cardList = new Section({
+  renderer: (photo, userId) => {
+    createCard(photo, userId);
+}}, '.cards');
+
+const startPage = function() {
+  Promise.all([apiRequest.getProfileInfo(), apiRequest.getCardsFromServer()])
+  .then(([user, cards]) => {
+    defaultUserInfo.setUserInfo(user);
+    cardList.renderItems(cards, user._id);
+  })
+  .catch((err) => {
+    console.log(`Ошибка ${err}.`);
+  })
+}
+startPage();
 
 editButton.addEventListener('click', () => {
   const {name, about} = defaultUserInfo.getUserInfo();

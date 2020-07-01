@@ -107,4 +107,32 @@ export default class Api {
       return Promise.reject(`Что-то пошло не так: ${res.status}`);
     })
   }
+  addLike(id) {
+    return fetch(`${this._url}/cards/likes/${id}`, {
+      method: 'PUT',
+      headers: {
+        authorization: this._token
+      }
+    })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Что-то пошло не так: ${res.status}`);
+    })
+  }
+  deleteLike(id) {
+    return fetch(`${this._url}/cards/likes/${id}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this._token
+      }
+    })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Что-то пошло не так: ${res.status}`);
+    })
+  }
 }
