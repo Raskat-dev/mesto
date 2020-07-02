@@ -35,12 +35,12 @@ const validateAvatarForm = new FormValidator(formConfig, avatarElement);
 validateAvatarForm.enableValidation();
 
 
-const deletePopupWindow = new PopupConfirm(deletePopup, { confirm: (card, cardClass) => {
-  cardDelete(card, cardClass);
+const deletePopupWindow = new PopupConfirm(deletePopup, { confirm: (item, itemClass) => {
+  cardDelete(item, itemClass);
 }
 });
-const openConfirmModal = function(card, cardClass) {
-  deletePopupWindow.setCard(card, cardClass);
+const openConfirmModal = function(item, itemClass) {
+  deletePopupWindow.setItem(item, itemClass);
   deletePopupWindow.open();
 }
 //Данные о пользователе с сервера
@@ -67,12 +67,12 @@ const addUserForm = new PopupWithForm(authorPopup, {
     apiRequest.changeProfileInfo(inputResult)
     .then((res) => {
       defaultUserInfo.setUserNameInfo(res);
+      addUserForm.close();
     })
     .catch((err) => {
       console.log(`Ошибка ${err}.`);
     })
     .finally(() => {
-      addUserForm.close();
       downloadStatus(authorElement, false);
     })
   }
@@ -84,12 +84,12 @@ const addUserAvatar = new PopupWithForm(avatarPopup, {
     apiRequest.changeProfileAvatar(inputResult)
     .then((res) => {
       defaultUserInfo.setUserAvatar(res);
+      addUserAvatar.close();
     })
     .catch((err) => {
       console.log(`Ошибка ${err}.`);
     })
     .finally(() => {
-      addUserAvatar.close();
       downloadStatus(avatarElement, false);
     })
   }
@@ -101,7 +101,7 @@ const createCard = function(cardItem, userId) {
   const card = new Card({data: cardItem,
     handleCardClick: () => {
     currentPhoto.open(cardItem);
-  }, handleDelete: () => openConfirmModal(cardItems, card), 
+  }, handleDelete: () => openConfirmModal(cardItem, card), 
   addLike: () => cardLike(cardItem),
   deleteLike:() => cardLikeDelete(cardItem) }, userId);
   const cardElement = card.generateCard();
@@ -133,10 +133,10 @@ const addPhotoForm = new PopupWithForm(photoPopup, {
     })
 }}, validatePhotoForm);
 
-const cardDelete = function(item, cardClass) {
+const cardDelete = function(item, cardObject) {
   apiRequest.deleteCard(item._id)
   .then(() => {
-    cardClass.pressDelete();
+    cardObject.pressDelete();
   })
   .catch((err) => {
     console.log(`Ошибка ${err}.`);

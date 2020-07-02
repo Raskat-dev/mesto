@@ -6,12 +6,12 @@ export default class PopupConfirm extends Popup {
     this._confirm = confirm;
     this._submit = evt => {
       evt.preventDefault();
-      this._confirm(this._card, this._cardClass);
+      this._confirm(this._item, this._itemClass);
     }
     this._popup.querySelector('.popup__container').addEventListener('submit', this._submit);
   }
-  setCard(card, cardClass) {
-    this._card = card;
-    this._cardClass = cardClass;
+  setItem(item, itemClass) {
+    this._item = item;
+    this._itemClass = itemClass;
   }
 }

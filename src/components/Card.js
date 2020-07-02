@@ -29,16 +29,23 @@ _openOriginal() {
       this._card.querySelector('.card__like').classList.remove('card__like_active');
       this._deleteLike()
       .then((res) => cardLikes.textContent = res.likes.length)
+      .catch((err) => {
+      console.log(`Ошибка ${err}.`);
+    })
     } else {
       this._card.querySelector('.card__like').classList.add('card__like_active');
       this._addLike()
       .then((res) => cardLikes.textContent = res.likes.length)
+      .catch((err) => {
+        console.log(`Ошибка ${err}.`);
+      })
     }
   }
   pressDelete() {
     this._card.querySelector('.card__image').removeEventListener('click', this.openOriginal);
     this._card.querySelector('.card__like').removeEventListener('click', this.pressLike);
     this._card.remove();
+    this._card = null;
   }
   _setEventListeners() {
     this.openOriginal = this._openOriginal.bind(this);
