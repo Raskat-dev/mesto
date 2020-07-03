@@ -33,9 +33,18 @@ export default class PopupWithForm extends Popup {
   }
 
   close() {
-    this._popup.querySelector('.popup__container').removeEventListener('submit', this._submit);
-    this._popup.querySelector('.popup__container').reset();
+    this._popup.querySelector(formConfig.formSelector).removeEventListener('submit', this._submit);
+    this._popup.querySelector(formConfig.formSelector).reset();
     this._validator.clear();
     super.close();
     }
+
+   downloadStatus (status) {
+      if (status === true) {
+        this._popup.querySelector(formConfig.formSelector).querySelector(formConfig.submitButtonSelector).textContent = 'Сохранение...'
+        }
+      if (status === false) {
+        this._popup.querySelector(formConfig.formSelector).querySelector(formConfig.submitButtonSelector).textContent = 'Сохранить'
+        }
+      }
 }

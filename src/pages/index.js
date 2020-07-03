@@ -35,12 +35,13 @@ const validateAvatarForm = new FormValidator(formConfig, avatarElement);
 validateAvatarForm.enableValidation();
 
 
-const deletePopupWindow = new PopupConfirm(deletePopup, { confirm: (item, itemClass) => {
-  cardDelete(item, itemClass);
+const deletePopupWindow = new PopupConfirm(deletePopup, { confirm: (item, itemObject) => {
+  cardDelete(item, itemObject);
 }
 });
-const openConfirmModal = function(item, itemClass) {
-  deletePopupWindow.setItem(item, itemClass);
+//! Попробовать разобраться как реализовать удаление без передачи itemObject а через метод Card.getId
+const openConfirmModal = function(item, itemObject) {
+  deletePopupWindow.setItem(item, itemObject);
   deletePopupWindow.open();
 }
 //Данные о пользователе с сервера
@@ -49,21 +50,12 @@ const apiRequest = new Api ({
   token: 'c7046677-4ab5-42c0-bca8-fcae81104075'
 })
 //создаем объект с дефолтными данными пользователя
-const downloadStatus = function(formElement, status) {
-  if (status === true) {
-    formElement.querySelector('.popup__save').textContent = 'Сохранение...'
-    }
-  if (status === false) {
-    formElement.querySelector('.popup__save').textContent = 'Сохранить'
-    }
-  }
-
 const defaultUserInfo = new UserInfo({name: '', about: '', avatar: ''}, '.profile__name', '.profile__description', '.profile__avatar');
 
 //изменение данных пользователя
 const addUserForm = new PopupWithForm(authorPopup, {
   handleFormSubmit: (inputResult) => {
-    downloadStatus(authorElement, true);
+    addUserForm.downloadStatus(true);
     apiRequest.changeProfileInfo(inputResult)
     .then((res) => {
       defaultUserInfo.setUserNameInfo(res);
@@ -73,14 +65,14 @@ const addUserForm = new PopupWithForm(authorPopup, {
       console.log(`Ошибка ${err}.`);
     })
     .finally(() => {
-      downloadStatus(authorElement, false);
+      addUserForm.downloadStatus(false);
     })
   }
 }, validateAuthorForm)
 
 const addUserAvatar = new PopupWithForm(avatarPopup, {
   handleFormSubmit: (inputResult) => {
-    downloadStatus(avatarElement, true);
+    addUserAvatar.downloadStatus(true);
     apiRequest.changeProfileAvatar(inputResult)
     .then((res) => {
       defaultUserInfo.setUserAvatar(res);
@@ -90,7 +82,7 @@ const addUserAvatar = new PopupWithForm(avatarPopup, {
       console.log(`Ошибка ${err}.`);
     })
     .finally(() => {
-      downloadStatus(avatarElement, false);
+      addUserAvatar.downloadStatus(false);
     })
   }
 }, validateAvatarForm)
@@ -115,21 +107,20 @@ const cardLike = function(card) {
 const cardLikeDelete = function(card) {
   return apiRequest.deleteLike(card._id)
 }
-
 //сабмит новой карточки
 const addPhotoForm = new PopupWithForm(photoPopup, {
   handleFormSubmit: (item) => {
-    downloadStatus(photoElement, true);
+    addPhotoForm.downloadStatus(true);
     apiRequest.addNewCard(item)
     .then((res) => {
       createCard(res, res.owner._id);
+      addPhotoForm.close();
     })
     .catch((err) => {
       console.log(`Ошибка ${err}.`);
     })
     .finally(() => {
-      addPhotoForm.close();
-      downloadStatus(photoElement, false);
+      addPhotoForm.downloadStatus(false);
     })
 }}, validatePhotoForm);
 
