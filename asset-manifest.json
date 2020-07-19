@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.fa94680c.chunk.css",
-    "main.js": "/static/js/main.4b4cde7e.chunk.js",
-    "main.js.map": "/static/js/main.4b4cde7e.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.e8402bce.js",
-    "runtime-main.js.map": "/static/js/runtime-main.e8402bce.js.map",
-    "static/js/2.fccce53f.chunk.js": "/static/js/2.fccce53f.chunk.js",
-    "static/js/2.fccce53f.chunk.js.map": "/static/js/2.fccce53f.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.5477cfea3a3a9bdcb9ee7221e629a039.js": "/precache-manifest.5477cfea3a3a9bdcb9ee7221e629a039.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.fa94680c.chunk.css.map": "/static/css/main.fa94680c.chunk.css.map",
-    "static/js/2.fccce53f.chunk.js.LICENSE.txt": "/static/js/2.fccce53f.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/static/media/like_active.9fdebb6b.svg",
-    "static/media/avatar.jpg": "/static/media/avatar.dc3245f1.jpg",
-    "static/media/logo1.svg": "/static/media/logo1.94cbab21.svg"
+    "main.css": "/mesto/static/css/main.d5c9af1e.chunk.css",
+    "main.js": "/mesto/static/js/main.bd5ee883.chunk.js",
+    "main.js.map": "/mesto/static/js/main.bd5ee883.chunk.js.map",
+    "runtime-main.js": "/mesto/static/js/runtime-main.fa38e68f.js",
+    "runtime-main.js.map": "/mesto/static/js/runtime-main.fa38e68f.js.map",
+    "static/js/2.fccce53f.chunk.js": "/mesto/static/js/2.fccce53f.chunk.js",
+    "static/js/2.fccce53f.chunk.js.map": "/mesto/static/js/2.fccce53f.chunk.js.map",
+    "index.html": "/mesto/index.html",
+    "precache-manifest.935a50cc85dd5fd11e1ef233b4315786.js": "/mesto/precache-manifest.935a50cc85dd5fd11e1ef233b4315786.js",
+    "service-worker.js": "/mesto/service-worker.js",
+    "static/css/main.d5c9af1e.chunk.css.map": "/mesto/static/css/main.d5c9af1e.chunk.css.map",
+    "static/js/2.fccce53f.chunk.js.LICENSE.txt": "/mesto/static/js/2.fccce53f.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/mesto/static/media/like_active.9fdebb6b.svg",
+    "static/media/avatar.jpg": "/mesto/static/media/avatar.dc3245f1.jpg",
+    "static/media/logo1.svg": "/mesto/static/media/logo1.94cbab21.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.e8402bce.js",
+    "static/js/runtime-main.fa38e68f.js",
     "static/js/2.fccce53f.chunk.js",
-    "static/css/main.fa94680c.chunk.css",
-    "static/js/main.4b4cde7e.chunk.js"
+    "static/css/main.d5c9af1e.chunk.css",
+    "static/js/main.bd5ee883.chunk.js"
   ]
 }
