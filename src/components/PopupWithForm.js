@@ -2,7 +2,6 @@ import React from 'react';
 
 function PopupWithForm(props) {
   return (
-<>
     <div id={props.name} className={(props.isOpen ? "popup popup_opened" : "popup")}>
       <form className="popup__container" id="author-container" method="post" action="#" name={props.name} noValidate>
         <button className="popup__close" type="button" aria-label="закрыть" onClick={props.onClose}></button>
@@ -11,7 +10,6 @@ function PopupWithForm(props) {
         <button className="popup__save" type="submit">{props.buttonText}</button>
       </form>
     </div>
-</>
   );
 }
 
