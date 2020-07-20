@@ -1,16 +1,50 @@
-import React from 'react';
-
-function PopupWithForm(props) {
-  return (
-    <div id={props.name} className={(props.isOpen ? "popup popup_opened" : "popup")}>
-      <form className="popup__container" id="author-container" method="post" action="#" name={props.name} noValidate>
-        <button className="popup__close" type="button" aria-label="закрыть" onClick={props.onClose}></button>
-        <h3 className={`popup__title ${props.titleModifier}`}>{props.title}</h3>
-        {props.children}
-        <button className="popup__save" type="submit">{props.buttonText}</button>
-      </form>
-    </div>
-  );
+import Popup from './Popup.js';
+const formConfig = {
+  formSelector: '.popup__container',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save',
+  inactiveButtonClass: 'popup__save_status_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
 }
 
-export default PopupWithForm;
+export default class PopupWithForm extends Popup {
+  constructor(popupSelector, { handleFormSubmit }, validator) {
+    super(popupSelector);
+    this._handleFormSubmit = handleFormSubmit;
+    this._validator = validator;
+    this._submit = this._hanldeSubmitForm.bind(this);
+  }
+  _getInputValues() {
+    this._inputList = this._popup.querySelectorAll(formConfig.inputSelector);
+    this._formValues = {};
+    this._inputList.forEach(input => {
+      this._formValues[input.name] = input.value
+    });
+    return this._formValues;
+  }
+  _hanldeSubmitForm(evt) {
+    evt.preventDefault();
+    this._handleFormSubmit(this._getInputValues());
+  }
+  open() {
+    super.open();
+    this._popup.querySelector(formConfig.formSelector).addEventListener('submit', this._submit);
+  }
+
+  close() {
+    this._popup.querySelector(formConfig.formSelector).removeEventListener('submit', this._submit);
+    this._popup.querySelector(formConfig.formSelector).reset();
+    this._validator.clear();
+    super.close();
+    }
+
+   downloadStatus (status) {
+      if (status === true) {
+        this._popup.querySelector(formConfig.formSelector).querySelector(formConfig.submitButtonSelector).textContent = 'Сохранение...'
+        }
+      if (status === false) {
+        this._popup.querySelector(formConfig.formSelector).querySelector(formConfig.submitButtonSelector).textContent = 'Сохранить'
+        }
+      }
+}

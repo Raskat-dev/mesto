@@ -1,6 +1,4 @@
-import { myApiData } from './utils'
-
-class Api {
+export default class Api {
   constructor(options) {
     this._url = options.url;
     this._token  = options.token;
@@ -15,7 +13,7 @@ class Api {
 })
   .then((res) => {
     if (res.ok) {
-    return res.json();
+     return res.json();
     }
     return Promise.reject(`Что-то пошло не так: ${res.status}`);
   })
@@ -59,7 +57,7 @@ class Api {
       return Promise.reject(`Что-то пошло не так: ${res.status}`);
     })
   }
-
+  
   getCardsFromServer() {
     return fetch(`${this._url}/cards`, {
   method: 'GET',
@@ -94,7 +92,7 @@ class Api {
     return Promise.reject(`Что-то пошло не так: ${res.status}`);
   })
   }
-
+  
   deleteCard(id) {
     return fetch(`${this._url}/cards/${id}`, {
       method: 'DELETE',
@@ -138,5 +136,3 @@ class Api {
     })
   }
 }
-
-export const apiRequest = new Api(myApiData);
