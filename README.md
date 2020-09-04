@@ -14,7 +14,3 @@
 ### Алгоритм развертки проекта:
 1. Выполнить команду git clone https://github.com/Raskat-dev/mesto.git или скачать репозиторий архивом;
 2. Выполнить команду npm run dev находясь в папке с проектом.
-
-### Контакты:
-* e-mail: ka-rostislav@yandex.ru
-* tlgrm: @ColdJanuary
